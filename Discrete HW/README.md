@@ -1,6 +1,7 @@
 # Discrete Adaptive Control — Homework
 
 This folder contains the homework related to **discrete-time adaptive control** from the Adaptive Control course.
+**Important**: the full project report is written in Farsi (Persian) and the simulation plots are included inside that report.
 
 ##  Overview
 The exercises focus on the design and analysis of discrete-time adaptive systems. They include theoretical derivations, stability analysis, and simulation of adaptive laws in the discrete domain.
