@@ -4,7 +4,6 @@ This repository contains my coursework, final take-home exam, and final project 
 
 ---
 
----
 
 ##  Description
 
