@@ -57,5 +57,5 @@ Feel free to explore and reference with proper citation.
 ##  Author
 **Setayesh Khasehtarash**  
 Adaptive Control Course — AUT 
-Year: [e.g., 2024 or 2025]  
+Year: 2025  
 
