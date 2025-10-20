@@ -20,7 +20,15 @@ The final project implements a **Model Reference Adaptive Controller (MRAC)** fo
 - Adaptive parameter estimation  
 - Lyapunov-based stability assurance  
 - MATLAB/Python simulation of dynamic response  
-- Performance comparison with non-adaptive controllers  
+- Performance comparison with non-adaptive controllers
+
+  
+### Discrete Homework
+The discrete homework assignments focus on the implementation and analysis of discrete-time adaptive control systems. Topics include:
+
+- Discrete-time Lyapunov stability analysis
+- Derivation of discrete adaptive laws
+- Simulation of parameter convergence in discrete-time systems
 
 ---
 
