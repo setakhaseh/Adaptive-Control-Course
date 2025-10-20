@@ -1,0 +1,76 @@
+clc; clear;
+
+% ===== پارامترهای واقعی =====
+A = [0 1 0;
+     0.01 0 1;
+     0    0 0];
+B = [1; 0; 2];
+C = [1 0 0];
+
+% ===== تنظیمات =====
+T = 250;
+n = 3;
+x = zeros(n, T);
+y = zeros(1, T);
+u = randn(1, T);   % ورودی تصادفی
+
+% ===== تولید داده خروجی =====
+for t = 2:T
+    x(:,t) = A * x(:,t-1) + B * u(t-1);
+    y(t) = C * x(:,t);
+end
+
+% ===== الگوریتم RLS =====
+theta_hat = zeros(6, 1);       % [a11; a21; a31; b1; b2; b3]
+theta_history = zeros(6, T);
+P = 100 * eye(6);              % مقدار اولیه
+
+Phi_all = zeros(6, T-3);       % برای بررسی تحریک پایدار
+
+for t = 4:T
+    phi = [y(t-1); y(t-2); y(t-3); u(t-1); u(t-2); u(t-3)];
+    phit = phi';
+    Phi_all(:, t-3) = phi;     % ذخیره برای بررسی تحریک پایدار
+
+    e = y(t) - phit * theta_hat;
+    denom = 1 + phit * P * phi;
+    
+    theta_hat = theta_hat + (P * phi) * (e / denom);
+    P = P - (P * phi * phit * P) / denom;
+
+    theta_history(:,t) = theta_hat;
+end
+
+% ===== نمایش خروجی =====
+disp('تخمین نهایی پارامترها با RLS:')
+disp('theta_hat = [a11; a21; a31; b1; b2; b3]')
+disp(theta_hat)
+
+% ===== بررسی 1: همگرایی پارامترها =====
+labels = {'a11','a21','a31','b1','b2','b3'};
+theta_real = [0; 0.01; 0; 1; 0; 2];
+
+figure;
+for i = 1:6
+    subplot(3,2,i)
+    plot(1:T, theta_history(i,:), 'b', 'LineWidth', 1.5); hold on
+    yline(theta_real(i), 'k--', 'LineWidth', 1.2);
+    xlabel('Time step'); ylabel(labels{i});
+    legend('Estimated','True'); grid on
+    title(['تخمین ', labels{i}])
+end
+sgtitle('بررسی همگرایی پارامترها - RLS')
+
+% ===== بررسی 2: شرط تحریک پایدار =====
+rank_phi = rank(Phi_all);
+disp(['رتبه ماتریس Phi_all (برای بررسی تحریک پایدار) = ', num2str(rank_phi)])
+if rank_phi == 6
+    disp(' شرط تحریک پایدار برقرار است.')
+else
+    disp(' شرط تحریک پایدار برقرار نیست.')
+end
+
+% ===== بررسی 3: محدود بودن تخمین‌ها =====
+max_vals = max(abs(theta_history'), [], 1);
+disp('بیشترین مقدار مطلق هر پارامتر در طول تخمین:')
+disp(array2table(max_vals, 'VariableNames', labels))
